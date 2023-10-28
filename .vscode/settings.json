@@ -1,0 +1,7 @@
+{
+    "mypy.enabled": false,
+    "files.exclude": {
+        "**/backend/*": true,
+        "**/frontend/*": true
+    }
+}
