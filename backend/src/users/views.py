@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -32,7 +34,11 @@ class UserLoginView(APIView):
                     "detail": "Login successful.",
                     "user": user_serializer.data,
                 }
-                return Response(data, status=status.HTTP_200_OK)
+                return Response(
+                    json.dumps(data),
+                    content_type="JSON",
+                    status=status.HTTP_200_OK,
+                )
 
         return Response(
             {"error": "Invalid credentials"},
