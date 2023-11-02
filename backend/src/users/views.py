@@ -1,7 +1,8 @@
 import json
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -22,17 +23,15 @@ class UserLoginView(APIView):
         serializer = UserLoginSerializer(data=request.data)
 
         if serializer.is_valid():
-            username = serializer.validated_data["username"]
-            password = serializer.validated_data["password"]
-
-            user = authenticate(request, username=username, password=password)
-
+            user = serializer.validated_data["user"]
             if user is not None:
                 login(request, user)
+                token, _ = Token.objects.get_or_create(user=user)  # type: ignore
                 user_serializer = UserSerializer(user)
                 data = {
                     "detail": "Login successful.",
                     "user": user_serializer.data,
+                    "token": token,
                 }
                 return Response(
                     json.dumps(data),

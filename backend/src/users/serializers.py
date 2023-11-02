@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
-    
+
     def validate(self, attrs):
         username = attrs.get("username")
         password = attrs.get("password")
@@ -26,8 +26,9 @@ class UserLoginSerializer(serializers.Serializer):
             if not user:
                 msg = "Access denied: wrong username or password."
                 raise serializers.ValidationError(msg, code="authorization")
+
+            attrs["user"] = user
+            return attrs
         else:
             msg = 'Both "username" and "password" are required.'
             raise serializers.ValidationError(msg, code="authorization")
-        attrs["user"] = user
-        return attrs
