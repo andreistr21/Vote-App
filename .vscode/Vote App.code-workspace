@@ -11,5 +11,7 @@
 		}
 	],
 	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Vote App",
+		"liveServer.settings.port": 5501
 	}
 }
