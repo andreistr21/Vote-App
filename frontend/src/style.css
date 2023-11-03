@@ -16,3 +16,25 @@
   background-color: var(--grey-300);
   height: 48px;
 }
+main{
+  height: 100%;
+}
+
+.section-center{
+  width: 100%;
+  height: calc(100% - 48px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 
+=======
+FORMS
+=======
+*/
+.auth-form{
+}
+.form-field {
+  margin-bottom: 12px;
+}

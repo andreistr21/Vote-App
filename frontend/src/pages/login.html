@@ -1,41 +1,33 @@
-<head></head>
-<html lang="en" id="html-section"></html>
+<!DOCTYPE html>
 
-<script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
+<html lang="en" id="html-section">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Vote App</title>
+    <link rel="stylesheet" href=".././normalize.css" />
+    <link rel="stylesheet" href=".././style.css" />
+  </head>
+  <body>
+    <header class="nav-bar"></header>
+    <main>
+      <section class="section-center">
+        <form class="auth-form" id="login-form">
+          <div class="form-field">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required />
+          </div>
 
-<script id="login-content-template" type="text/x-handlebars-template">
-  <h2>New Content</h2>
-  <p>This is the updated content for the main tag.</p>
-</script>
+          <div class="form-field">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+          </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Load the new content template
-    const newContentSource = document.getElementById(
-      "login-content-template"
-    ).innerHTML;
-    const newContentTemplate = Handlebars.compile(newContentSource);
-    // Render the new content template
-    const newContentHTML = newContentTemplate({});
-
-    // Load the external template file using AJAX
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", "base_template.html", true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        // Get the template content from the response
-        const templateSource = xhr.responseText;
-        // Compile the template
-        const baseTemplate = Handlebars.compile(templateSource);
-        // Render the template
-        const baseHTML = baseTemplate({});
-        // Insert the rendered template into the DOM
-        document.getElementById("html-section").innerHTML = baseHTML;
-
-        // Replace the content of the 'main' tag with the new content
-        document.querySelector("main").innerHTML = newContentHTML;
-      }
-    };
-    xhr.send();
-  });
-</script>
+          <button type="submit">Login</button>
+        </form>
+      </section>
+    </main>
+    <script id="main-script" src=".././script.js"></script>
+  </body>
+</html>
