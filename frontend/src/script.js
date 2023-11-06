@@ -1,3 +1,7 @@
+function updateUsername(username) {
+  document.getElementById("username").textContent = username;
+}
+
 function login(username, password) {
   fetch("http://127.0.0.1:8000/user/login/", {
     method: "POST",
@@ -17,6 +21,10 @@ function login(username, password) {
         console.log("Login successful");
         document.cookie =
           "Authorization=Token " + responseData.token + "; path=/";
+        updateUsername(responseData.user.username);
+      } else if (responseData.detail === "You are already logged in.") {
+        console.log("Already logged in");
+        updateUsername(responseData.user.username);
       } else {
         console.log("Login failed");
       }
