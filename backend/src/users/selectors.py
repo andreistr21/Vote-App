@@ -1,5 +1,5 @@
-from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 
 def get_token_by_key(key: str) -> Token | None:

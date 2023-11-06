@@ -14,9 +14,9 @@ from users.serializers import UserLoginSerializer, UserSerializer
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
-    def post(self, request: Request):
-        if self._is_user_already_logged_in(request):
-            return self._get_already_logged_in_response()
+    def post(self, request: Request) -> Response:
+        if token := self._is_user_already_logged_in(request):
+            return self._get_already_logged_in_response(token)
 
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -24,15 +24,23 @@ class UserLoginView(APIView):
 
         return self._get_invalid_credentials_response()
 
-    def _is_user_already_logged_in(self, request: Request) -> Token | bool:
+    def _is_user_already_logged_in(self, request: Request) -> Token | None:
         if authorization_token := request.META.get("HTTP_COOKIE"):
             token_key = authorization_token.split(" ")[1]
-            return get_token_by_key(token_key) or False
-        return False
+            return get_token_by_key(token_key) or None
+        return None
 
-    def _get_already_logged_in_response(self) -> Response:
+    def _get_already_logged_in_response(self, token: Token) -> Response:
+        user = Token.objects.get(key=token.key).user
+        user_serializer = UserSerializer(user)
+
         return Response(
-            {"detail": "You are already logged in."},
+            json.dumps(
+                {
+                    "detail": "You are already logged in.",
+                    "user": user_serializer.data,
+                }
+            ),
             status=status.HTTP_200_OK,
         )
 
@@ -55,6 +63,6 @@ class UserLoginView(APIView):
 
     def _get_invalid_credentials_response(self) -> Response:
         return Response(
-            {"error": "Invalid credentials"},
+            json.dumps({"error": "Invalid credentials"}),
             status=status.HTTP_400_BAD_REQUEST,
         )
