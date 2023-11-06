@@ -12,6 +12,10 @@
   --grey-900: #0f172a;
 }
 
+main {
+  height: calc(100vh - 48px);
+}
+
 a {
   all: unset;
   cursor: pointer;
@@ -35,10 +39,6 @@ HEADER
 }
 .username {
   font-size: 1.5rem;
-}
-
-main {
-  height: 100%;
 }
 
 .section-center {
