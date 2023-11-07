@@ -30,7 +30,10 @@ class VoteForm(models.Model):
 
 class VoteFields(models.Model):
     form = models.ForeignKey(
-        VoteForm, related_name="vote_fields", on_delete=models.CASCADE
+        VoteForm,
+        related_name="vote_fields",
+        on_delete=models.CASCADE,
+        blank=True,
     )
     name = models.CharField(max_length=80)
     description = models.TextField(max_length=200, null=True, blank=True)
