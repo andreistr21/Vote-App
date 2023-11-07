@@ -25,13 +25,12 @@ class UserLoginView(APIView):
         return self._get_invalid_credentials_response()
 
     def _is_user_already_logged_in(self, request: Request) -> Token | None:
-        if authorization_token := request.META.get("HTTP_COOKIE"):
-            token_key = authorization_token.split(" ")[1]
-            return get_token_by_key(token_key) or None
+        if authorization_token_key := request.COOKIES.get("auth_token"):
+            return get_token_by_key(authorization_token_key) or None
         return None
 
     def _get_already_logged_in_response(self, token: Token) -> Response:
-        user = Token.objects.get(key=token.key).user
+        user = token.user
         user_serializer = UserSerializer(user)
 
         return Response(

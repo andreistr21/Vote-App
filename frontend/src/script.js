@@ -19,8 +19,7 @@ function login(username, password) {
       const responseData = JSON.parse(data);
       if (responseData.detail === "Login successful.") {
         console.log("Login successful");
-        document.cookie =
-          "Authorization=Token " + responseData.token + "; path=/";
+        document.cookie = "auth_token=" + responseData.token + "; path=/";
         updateUsername(responseData.user.username);
       } else if (responseData.detail === "You are already logged in.") {
         console.log("Already logged in");
@@ -37,8 +36,8 @@ function login(username, password) {
 function loginFormEventListener(loginForm) {
   loginForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const username = document.getElementById("username-input").value;
+    const password = document.getElementById("password-input").value;
 
     login(username, password);
   });
