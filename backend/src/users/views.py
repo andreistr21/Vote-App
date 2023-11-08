@@ -14,6 +14,7 @@ from users.serializers import UserLoginSerializer, UserSerializer
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
+    # TODO: Modify for TokenAuthSupportCookie
     def post(self, request: Request) -> Response:
         if token := self._is_user_already_logged_in(request):
             return self._get_already_logged_in_response(token)
