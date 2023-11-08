@@ -1,3 +1,6 @@
 {
-    "mypy.enabled": false
+    "mypy.enabled": false,
+    "cSpell.words": [
+        "maxlength"
+    ]
 }

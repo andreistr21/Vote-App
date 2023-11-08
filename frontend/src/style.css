@@ -13,7 +13,7 @@
 }
 
 main {
-  height: calc(100vh - 48px);
+  min-height: calc(100vh - 48px);
 }
 
 a {
@@ -42,8 +42,7 @@ HEADER
 }
 
 .section-center {
-  width: 100%;
-  height: calc(100% - 48px);
+  min-height: calc(100vh - 48px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,4 +55,8 @@ FORMS
 */
 .form-field {
   margin-bottom: 12px;
+}
+
+#vote-form-form {
+  margin: 16px 0;
 }

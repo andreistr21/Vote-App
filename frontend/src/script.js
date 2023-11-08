@@ -1,3 +1,5 @@
+import { createFormPage } from "./create_form.js";
+
 function updateUsername(username) {
   document.getElementById("username").textContent = username;
 }
@@ -44,9 +46,12 @@ function loginFormEventListener(loginForm) {
 }
 
 window.addEventListener("load", function () {
+  const currentPath = window.location.pathname;
   const loginForm = document.getElementById("login-form");
 
   if (loginForm) {
     loginFormEventListener(loginForm);
+  } else if (currentPath == "/pages/vote/create_form.html") {
+    createFormPage();
   }
 });

@@ -27,6 +27,7 @@ class VoteFormSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         vote_fields_data = validated_data.pop("vote_fields")
+        # TODO: Check if vote fields contains at least (1\2?) fields
         vote_form = VoteForm.objects.create(**validated_data)
 
         vote_fields_to_create = [
