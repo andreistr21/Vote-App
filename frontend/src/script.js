@@ -1,4 +1,4 @@
-import { createFormPage } from "./create_form.js";
+import { createFormPage } from "./js_pages/create_form.js";
 
 function updateUsername(username) {
   document.getElementById("username").textContent = username;

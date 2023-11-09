@@ -60,3 +60,7 @@ FORMS
 #vote-form-form {
   margin: 16px 0;
 }
+.form-errors{
+  color: red;
+  margin-top: 16px;
+}

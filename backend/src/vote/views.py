@@ -10,7 +10,8 @@ from vote.serializers import VoteFormSerializer
 
 class MakeVoteView(APIView):
     def post(self, request: Request) -> Response:
-        vote_form_serializer = VoteFormSerializer(data=request.data)
+        form_data = {"admin": request.user.id} | request.data
+        vote_form_serializer = VoteFormSerializer(data=form_data)
         if vote_form_serializer.is_valid():
             vote_form_serializer.save()
             return Response(
