@@ -112,8 +112,9 @@ function sendFormData(formData) {
     .then((data) => {
       const responseData = JSON.parse(data);
 
-      if (responseData.detail === "Form created successfully.") {
+      if (responseData.details === "Form created successfully.") {
         console.log("Form created successfully");
+        location.reload();
       } else if (responseData.errors) {
         console.log("Form returned errors");
         addErrorsToForm(responseData.errors);
