@@ -1,56 +1,11 @@
-import { createFormPage } from "./js_pages/create_form.js";
-
-function updateUsername(username) {
-  document.getElementById("username").textContent = username;
-}
-
-function login(username, password) {
-  fetch("http://127.0.0.1:8000/user/login/", {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username,
-      password,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      const responseData = JSON.parse(data);
-      if (responseData.detail === "Login successful.") {
-        console.log("Login successful");
-        document.cookie = "auth_token=" + responseData.token + "; path=/";
-        updateUsername(responseData.user.username);
-      } else if (responseData.detail === "You are already logged in.") {
-        console.log("Already logged in");
-        updateUsername(responseData.user.username);
-      } else {
-        console.log("Login failed");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-function loginFormEventListener(loginForm) {
-  loginForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    const username = document.getElementById("username-input").value;
-    const password = document.getElementById("password-input").value;
-
-    login(username, password);
-  });
-}
+import { createFormPage } from "./js_pages/vote/create_form.js";
+import { loginPage } from "./js_pages/user/login.js";
 
 window.addEventListener("load", function () {
   const currentPath = window.location.pathname;
-  const loginForm = document.getElementById("login-form");
 
-  if (loginForm) {
-    loginFormEventListener(loginForm);
+  if (currentPath == "/pages/user/login.html") {
+    loginPage();
   } else if (currentPath == "/pages/vote/create_form.html") {
     createFormPage();
   }
