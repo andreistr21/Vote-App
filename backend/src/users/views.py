@@ -1,23 +1,23 @@
 import json
 
+from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users.selectors import get_or_create_token_by_user, get_token_by_key
 from users.serializers import UserLoginSerializer, UserSerializer
 
 
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
-    # TODO: Modify for TokenAuthSupportCookie
     def post(self, request: Request) -> Response:
-        if token := self._is_user_already_logged_in(request):
-            return self._get_already_logged_in_response(token)
+        if request.auth:
+            return self._get_already_logged_in_response(
+                request.user  # type: ignore
+            )
 
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -25,13 +25,7 @@ class UserLoginView(APIView):
 
         return self._get_invalid_credentials_response()
 
-    def _is_user_already_logged_in(self, request: Request) -> Token | None:
-        if authorization_token_key := request.COOKIES.get("auth_token"):
-            return get_token_by_key(authorization_token_key) or None
-        return None
-
-    def _get_already_logged_in_response(self, token: Token) -> Response:
-        user = token.user
+    def _get_already_logged_in_response(self, user: User) -> Response:
         user_serializer = UserSerializer(user)
 
         return Response(
@@ -47,8 +41,8 @@ class UserLoginView(APIView):
     def _get_successful_login_response(
         self, serializer: UserLoginSerializer
     ) -> Response:
-        user = serializer.validated_data["user"]
-        token = get_or_create_token_by_user(user)
+        user: User = serializer.validated_data["user"]
+        token = user.auth_token
         user_serializer = UserSerializer(user)
         data = {
             "detail": "Login successful.",
