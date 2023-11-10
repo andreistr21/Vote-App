@@ -1,6 +1,4 @@
-function updateUsername(username) {
-  document.getElementById("username").textContent = username;
-}
+import { updateUsername } from "../../services.js";
 
 function login(username, password) {
   fetch("http://127.0.0.1:8000/user/login/", {
