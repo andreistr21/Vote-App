@@ -60,3 +60,9 @@ class UserLoginView(APIView):
             json.dumps({"error": "Invalid credentials"}),
             status=status.HTTP_400_BAD_REQUEST,
         )
+        
+        
+class GetUsernameView(APIView):
+    def get(self, request:Request) -> Response:
+        data = json.dumps({"username": request.user.username})
+        return Response(data)
