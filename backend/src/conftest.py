@@ -2,6 +2,18 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+from rest_framework.test import APIClient
+
+
+@pytest.fixture
+def api_client() -> APIClient:
+    return APIClient()
+
+
+@pytest.fixture
+def auth_api_client(api_client: APIClient, user_token: User) -> APIClient:
+    api_client.force_authenticate(user_token)
+    return api_client
 
 
 @pytest.fixture
