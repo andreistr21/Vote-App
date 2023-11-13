@@ -7,7 +7,7 @@ class TokenAuthSupportCookie(TokenAuthentication):
     """
 
     def authenticate(self, request):
-        # Check if "Authorization" is in the request cookies.
+        # Check if "auth_token" is in the request cookies.
         if (
             "auth_token" in request.COOKIES
             and "HTTP_AUTHORIZATION" not in request.META
