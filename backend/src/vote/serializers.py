@@ -28,7 +28,7 @@ class VoteFormSerializer(serializers.ModelSerializer):
         model = VoteForm
         fields = "__all__"
 
-    def create(self, validated_data):
+    def create(self, validated_data) -> VoteForm:
         vote_fields_data = validated_data.pop("vote_fields")
         # TODO: Check if vote fields contains at least (1\2?) fields
         try:
@@ -62,5 +62,5 @@ class VoteFormSerializer(serializers.ModelSerializer):
             }
         )
 
-    def _get_unknown_error_data(self, error_msg: str):
+    def _get_unknown_error_data(self, error_msg: str) -> str:
         return json.dumps({"errors": {"Unknown error": (error_msg)}})
