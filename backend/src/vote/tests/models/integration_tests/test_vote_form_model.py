@@ -3,6 +3,7 @@ from datetime import timedelta
 import pytest
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.utils import timezone
 
 from vote.models import VoteForm
@@ -81,3 +82,32 @@ class TestFieldsChoices:
 
         with pytest.raises(ValidationError):
             form.full_clean()
+
+
+@pytest.mark.django_db
+class TestClosingGreaterThanCreatedConstraint:
+    """
+    Tests that closing_greater_than_created constraint works as expected.
+    """
+
+    def test_valid_closing_date(self, user: User):
+        closing_date_var = closing_date()
+        form = VoteForm(
+            admin=user,
+            name="test-name",
+            closing=closing_date_var,
+        )
+
+        form.full_clean()
+
+        assert form.closing == closing_date_var
+
+    def test_invalid_closing_date(self, user: User):
+        form = VoteForm(
+            admin=user,
+            name="test-name",
+            closing=timezone.now() - timedelta(days=1),
+        )
+
+        with pytest.raises(IntegrityError):
+            form.save()
