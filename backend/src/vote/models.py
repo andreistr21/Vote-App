@@ -17,7 +17,6 @@ class VoteForm(models.Model):
         choices=((1, "Single choice"), (2, "Multiple choice")), default=1
     )
 
-    # TODO: Add constraint: closing should be bigger then created
     closing = models.DateTimeField()
     created = models.DateTimeField(auto_now_add=True)
 
@@ -27,6 +26,13 @@ class VoteForm(models.Model):
     class Meta:
         verbose_name = "VoteForm"
         verbose_name_plural = "VoteForms"
+
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(closing__gt=models.F("created")),
+                name="closing_greater_than_created",
+            ),
+        ]
 
     def __str__(self):
         return f"Form: {self.name}"
