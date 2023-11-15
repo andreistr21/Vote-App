@@ -126,3 +126,38 @@ class TestDunderMethods:
         form.save()
 
         assert str(form) == f"Form: {form_name}"
+
+
+# Fields constraints
+
+@pytest.mark.django_db
+class TestNameConstraints:
+    def test_max_length_allowed(self, user: User):
+        name = "ten-chars-" * 15
+        form = VoteForm(
+            admin=user,
+            name=name,
+            closing=closing_date(),
+        )
+
+        form.full_clean()
+        form.save()
+
+        assert form.name == name
+
+    def test_max_length_forbidden(self, user: User):
+        name = "ten-chars-" * 15 + "c"
+        form = VoteForm(
+            admin=user,
+            name=name,
+            closing=closing_date(),
+        )
+
+        with pytest.raises(ValidationError) as e:
+            form.full_clean()
+            form.save()
+            
+            assert (
+                e["name"]  # type: ignore
+                == "Ensure this value has at most 150 characters (it has 151)."
+            )
