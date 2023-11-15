@@ -1,5 +1,5 @@
-from datetime import timedelta
 import datetime
+from datetime import timedelta
 
 import pytest
 from django.contrib.auth.models import User
@@ -8,10 +8,7 @@ from django.db import IntegrityError
 from django.utils import timezone
 
 from vote.models import VoteForm
-
-
-def closing_date() -> datetime.datetime:
-    return timezone.now() + timedelta(days=1)
+from vote.tests.models.integration_tests.conftest import closing_date
 
 
 @pytest.mark.django_db
