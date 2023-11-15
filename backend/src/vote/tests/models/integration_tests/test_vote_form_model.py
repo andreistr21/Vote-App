@@ -99,6 +99,7 @@ class TestClosingGreaterThanCreatedConstraint:
         )
 
         form.full_clean()
+        form.save()
 
         assert form.closing == closing_date_var
 
@@ -111,3 +112,17 @@ class TestClosingGreaterThanCreatedConstraint:
 
         with pytest.raises(IntegrityError):
             form.save()
+
+
+@pytest.mark.django_db
+class TestDunderMethods:
+    def test_str(self, user: User):
+        form_name = "check-test-name"
+        form = VoteForm(
+            admin=user,
+            name=form_name,
+            closing=closing_date(),
+        )
+        form.save()
+
+        assert str(form) == f"Form: {form_name}"
