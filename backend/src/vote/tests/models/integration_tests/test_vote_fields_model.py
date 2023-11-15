@@ -1,4 +1,5 @@
 import datetime
+from django.forms import ValidationError
 
 import pytest
 from django.contrib.auth.models import User
@@ -32,3 +33,28 @@ class TestDunderMethods:
             str(vote_field)
             == f"Vote fields: {vote_field.form} — test-form-name"
         )
+
+
+@pytest.mark.django_db
+class TestNameConstraints:
+    def test_max_length_allowed(self, vote_form: VoteForm):
+        name = "ten-chars-" * 8
+        vote_field = VoteFields.objects.create(
+            form=vote_form,
+            name=name,
+        )
+
+        vote_field.full_clean()
+        vote_field.save()
+
+        assert vote_field.name == name
+
+    def test_max_length_forbidden(self, vote_form: VoteForm):
+        name = "ten-chars-" * 8 + "c"
+        vote_field = VoteFields.objects.create(
+            form=vote_form,
+            name=name,
+        )
+
+        with pytest.raises(ValidationError):
+            vote_field.full_clean()
