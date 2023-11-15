@@ -31,6 +31,7 @@ class VoteFormSerializer(serializers.ModelSerializer):
     def create(self, validated_data) -> VoteForm:
         vote_fields_data = validated_data.pop("vote_fields")
         # TODO: Check if vote fields contains at least (1\2?) fields
+        # TODO: Check if description <= 1000 chars
         try:
             vote_form = VoteForm.objects.create(**validated_data)
         except IntegrityError as integrity_error:
