@@ -1,4 +1,5 @@
 from datetime import timedelta
+import datetime
 
 import pytest
 from django.contrib.auth.models import User
@@ -9,7 +10,7 @@ from django.utils import timezone
 from vote.models import VoteForm
 
 
-def closing_date():
+def closing_date() -> datetime.datetime:
     return timezone.now() + timedelta(days=1)
 
 
@@ -128,9 +129,9 @@ class TestDunderMethods:
         assert str(form) == f"Form: {form_name}"
 
 
-##### 
+#####
 # Fields constraints
-##### 
+#####
 
 
 @pytest.mark.django_db
