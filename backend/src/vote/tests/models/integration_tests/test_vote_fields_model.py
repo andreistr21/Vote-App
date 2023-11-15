@@ -32,7 +32,7 @@ class TestDunderMethods:
 
         assert (
             str(vote_field)
-            == f"Vote fields: {vote_field.form} — test-form-name"
+            == f"Vote fields: {vote_field.form} — test-field-name"
         )
 
 
