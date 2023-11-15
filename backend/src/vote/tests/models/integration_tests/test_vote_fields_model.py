@@ -1,4 +1,5 @@
 import datetime
+from pydoc import describe
 from django.forms import ValidationError
 
 import pytest
@@ -58,3 +59,26 @@ class TestNameConstraints:
 
         with pytest.raises(ValidationError):
             vote_field.full_clean()
+
+
+@pytest.mark.django_db
+class TestDescriptionConstraints:
+    def test_description_provided(self, vote_form: VoteForm):
+        vote_field = VoteFields.objects.create(
+            form=vote_form, name="test-name", description="test-desc"
+        )
+
+        vote_field.full_clean()
+        vote_field.save()
+
+        assert vote_field.description == "test-desc"
+
+    def test_description_not_provided(self, vote_form: VoteForm):
+        vote_field = VoteFields.objects.create(
+            form=vote_form, name="test-name"
+        )
+
+        vote_field.full_clean()
+        vote_field.save()
+
+        assert vote_field.description is None
