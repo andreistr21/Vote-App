@@ -1,35 +1,15 @@
 import json
 from datetime import timedelta
 from typing import Any
-from django.db import IntegrityError
 
 import pytest
-from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.utils import timezone
 from pytest_mock import MockerFixture
 from rest_framework.exceptions import ValidationError
 
 from vote.models import VoteFields, VoteForm
 from vote.serializers import VoteFormSerializer
-
-
-@pytest.fixture
-def vote_form_data(user: User) -> dict[str, Any]:
-    return {
-        "admin": user.id,
-        "name": "test-form-name",
-        "closing": timezone.now() + timedelta(1),
-    }
-
-
-@pytest.fixture
-def vote_fields_data() -> dict[str, list[dict[str, str]]]:
-    return {
-        "vote_fields": [
-            {"name": "test-vote-name-1"},
-            {"name": "test-vote-name-2"},
-        ]
-    }
 
 
 def test__get_unknown_error_data():
