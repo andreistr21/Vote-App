@@ -6,7 +6,6 @@ from django.urls import reverse
 from pytest_mock import MockerFixture
 from rest_framework.request import Request
 from rest_framework.test import APIRequestFactory
-from conftest import user_data
 
 from users.serializers import UserLoginSerializer, UserSerializer
 from users.views import UserLoginView
