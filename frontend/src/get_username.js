@@ -53,7 +53,8 @@ function checkIfAuthToken() {
 export function checkIfUsername() {
   /**
    * Checks if username is in local storage.
-   * If not - fetches it and saves in local storage.
+   * If so - inserts it into HTML.
+   * If not - fetches it and saves in local storage, then inserts it into HTML.
    */
   let username = localStorage.getItem("username");
   if (username === null || username === "undefined") {
