@@ -1,5 +1,6 @@
 import datetime
 from datetime import timedelta
+import json
 
 import pytest
 from django.contrib.auth.models import User
@@ -156,12 +157,10 @@ class TestNameConstraints:
 
         with pytest.raises(ValidationError) as e:
             form.full_clean()
-            form.save()
 
-            assert (
-                e["name"]  # type: ignore
-                == "Ensure this value has at most 150 characters (it has 151)."
-            )
+        assert str(e.value.args[0]["name"][0]) == str(
+            ["Ensure this value has at most 150 characters (it has 151)."]
+        )
 
 
 @pytest.mark.django_db
