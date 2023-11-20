@@ -89,3 +89,18 @@ def test_integrity_error_unknown_error(
         serializer.save()
 
     assert json.loads(e.value.args[0])["errors"]["Unknown error"] == error_msg
+
+
+@pytest.mark.django_db
+def test_create_with_only_one_vote_field(
+    vote_form_data: dict[str, Any],
+):
+    vote_fields_data = {
+        "vote_fields": [
+            {"name": "test-vote-name-1"},
+        ]
+    }
+    serializer = VoteFormSerializer(data=vote_form_data | vote_fields_data)
+
+    assert not serializer.is_valid()
+    assert "vote_fields" in serializer.errors

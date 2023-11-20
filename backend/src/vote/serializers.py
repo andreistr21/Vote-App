@@ -20,7 +20,6 @@ class VoteFieldsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-# TODO: Update tests
 class VoteFormSerializer(serializers.ModelSerializer):
     vote_fields = VoteFieldsSerializer(many=True)
     votes = VotesSerializer(many=True, read_only=True)
