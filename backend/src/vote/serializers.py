@@ -20,6 +20,7 @@ class VoteFieldsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+# TODO: Update tests
 class VoteFormSerializer(serializers.ModelSerializer):
     vote_fields = VoteFieldsSerializer(many=True)
     votes = VotesSerializer(many=True, read_only=True)
@@ -28,10 +29,23 @@ class VoteFormSerializer(serializers.ModelSerializer):
         model = VoteForm
         fields = "__all__"
 
-    def create(self, validated_data) -> VoteForm:
+    def validate_vote_fields(self, data: dict) -> None:
+        # Validates if at least two fields received
+        if len(data) < 2:
+            raise serializers.ValidationError(
+                json.dumps(
+                    {
+                        "errors": {
+                            "Vote fields": (
+                                "Number of fields should be at least 2"
+                            )
+                        }
+                    }
+                )
+            )
+
+    def create(self, validated_data: dict) -> VoteForm:
         vote_fields_data = validated_data.pop("vote_fields")
-        # TODO: Check if vote fields contains at least (1\2?) fields
-        # TODO: Check if description <= 1000 chars
         try:
             vote_form = VoteForm.objects.create(**validated_data)
         except IntegrityError as integrity_error:
