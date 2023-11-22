@@ -48,11 +48,46 @@ HEADER
   align-items: center;
 }
 
+.section-middle {
+  min-height: calc(100vh - 48px);
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+/* 
+=======
+HEADER
+=======
+*/
+
+.tooltip-container {
+  position: relative;
+  margin-left: 4px;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  background-color: var(--grey-800);
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+  max-width: 400px;
+}
+
+.tooltip-trigger:hover + .tooltip {
+  display: block;
+}
+
 /* 
 =======
 FORMS
 =======
 */
+/* Sing in form */
 .form-field {
   margin-bottom: 12px;
 }
@@ -60,7 +95,68 @@ FORMS
 #vote-form-form {
   margin: 16px 0;
 }
-.form-errors{
+.form-errors {
   color: red;
   margin-top: 16px;
+}
+
+/* 
+=======
+Vote Form
+=======
+*/
+.vote-form > * {
+  margin: 0 8px;
+  margin-bottom: 6px;
+}
+.vote-form {
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  width: 720px;
+  height: fit-content;
+  background-color: var(--grey-200);
+  border-radius: 8px;
+}
+.right-content > * {
+  display: inline;
+  margin: 0;
+}
+.right-content {
+  font-size: 0.75rem;
+  margin-top: 8px;
+  margin-bottom: 0px;
+  margin-left: auto;
+}
+.form-closing-date-bundle > * {
+  display: inline;
+  margin: 0;
+}
+.vote-field {
+  width: 100%;
+  margin-bottom: 8px;
+}
+.vote-bar-container {
+  display: grid;
+  align-items: center;
+}
+.vote-bar-container > * {
+  grid-column-start: 1;
+  grid-row-start: 1;
+}
+.vote-bar {
+  height: 48px;
+  border-radius: 4px;
+  background-color: var(--grey-400);
+}
+.vote-bar-text {
+  margin-left: 8px;
+}
+.vote-input {
+  display: flex;
+  margin-left: 8px;
+}
+.vote-bar-percents-verbal {
+  margin-left: auto;
+  margin-right: 8px;
 }
