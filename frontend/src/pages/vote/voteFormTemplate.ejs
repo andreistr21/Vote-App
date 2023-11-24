@@ -17,11 +17,16 @@
     <% vote_fields.forEach(function(vote_field){ %>
     <div id="vote-field-<%= vote_field.id %>" class="vote-field">
       <div class="vote-bar-container">
-        <%# # TODO: Not show perc values if form of closed type %>
+        <% if (statistics_type == 1) { %>
         <div
           class="vote-bar"
-          style="width: <%= vote_field.votes_percentage %>%"
+          <% // eslint-disable %>
+          style="width: <% vote_field.votes_percentage %>%"
+          <% // eslint-enable %>
         ></div>
+        <% } %> <% if (statistics_type == 2) { %>
+        <div class="vote-bar"></div>
+        <% } %>
         <div class="vote-input">
           <% if (votes_type == 1) { %>
           <span><input type="radio" name="form-name" /></span>
@@ -34,10 +39,11 @@
             <span class="tooltip-trigger">⍰</span>
             <div class="tooltip"><%= vote_field.description %></div>
           </div>
-          <% } %> <%# # TODO: Not show perc values if form of closed type %>
+          <% } %> <% if (statistics_type == 1) { %>
           <div class="vote-bar-percents-verbal">
-            <%= vote_field.votes_percentage %>%
+            <%= vote_field.votes_percentage %>
           </div>
+          <% } %>
         </div>
       </div>
     </div>
