@@ -33,7 +33,9 @@ class VoteFormSerializer(serializers.ModelSerializer):
         representation["admin"] = instance.admin.username  # type:ignore
         return representation
 
-    def get_votes_count(self, instance: VoteForm):
+    def get_votes_count(self, instance: VoteForm) -> QuerySet | None:
+        if instance.statistics_type == 2:
+            return None
         return (
             Votes.objects.filter(form=instance)
             .values("vote")
