@@ -20,6 +20,9 @@ a {
   all: unset;
   cursor: pointer;
 }
+.small-text{
+  font-size: 0.75rem;
+}
 
 /* 
 =======
@@ -123,7 +126,6 @@ Vote Form
   margin: 0;
 }
 .right-content {
-  font-size: 0.75rem;
   margin-top: 8px;
   margin-bottom: 0px;
   margin-left: auto;

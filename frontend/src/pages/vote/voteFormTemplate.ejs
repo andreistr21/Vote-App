@@ -1,40 +1,49 @@
 <div class="vote-form">
-  <div class="right-content">
-    <%# # TODO: Substitute with admin username %>
+  <div class="right-content small-text">
     <p class="form-admin-username"><%= admin %></p>
     <p>-</p>
-    <%# # TODO: Substitute with 12:00, 21.11.2023 format %>
     <p class="form-creation-date"><%= created %></p>
   </div>
 
   <h3 class="form-name"><%= name %></h3>
   <div class="form-closing-date-bundle">
     <p class="form-closing-date-label">Closing at:</p>
-    <%# # TODO: Substitute with 12:00, 21.11.2023 format %>
-    <p class="form-closing-date-time"><%= created %></p>
+    <p class="form-closing-date-time"><%= closing %></p>
   </div>
 
+  <%# # TODO: Show which vote current user chose %>
   <p class="form-desc"><%= description %></p>
   <div class="form-vote-fields">
     <% vote_fields.forEach(function(vote_field){ %>
-    <div class="vote-field">
+    <div id="vote-field-<%= vote_field.id %>" class="vote-field">
       <div class="vote-bar-container">
-        <%# # TODO: Substitute with real percentage value %>
-        <div class="vote-bar" style="width: 25%"></div>
+        <%# # TODO: Not show perc values if form of closed type %>
+        <div
+          class="vote-bar"
+          style="width: <%= vote_field.votes_percentage %>%"
+        ></div>
         <div class="vote-input">
-          <%# # TODO: Change type %>
+          <% if (votes_type == 1) { %>
           <span><input type="radio" name="form-name" /></span>
+          <% } %> <% if (votes_type == 2) { %>
+          <span><input type="checkbox" name="form-name" /></span>
+          <% } %>
           <div class="vote-bar-text"><%= vote_field.name %></div>
-          <% if(vote_field.description){ %>
+          <% if (vote_field.description){ %>
           <div class="tooltip-container">
             <span class="tooltip-trigger">⍰</span>
             <div class="tooltip"><%= vote_field.description %></div>
           </div>
-          <% } %> <%# # TODO: Substitute with real percentage value %>
-          <div class="vote-bar-percents-verbal">25%</div>
+          <% } %> <%# # TODO: Not show perc values if form of closed type %>
+          <div class="vote-bar-percents-verbal">
+            <%= vote_field.votes_percentage %>%
+          </div>
         </div>
       </div>
     </div>
     <% }); %>
+    <div class="total-votes small-text">
+      <p>Total votes: <%= total_votes %></p>
+    </div>
   </div>
 </div>
