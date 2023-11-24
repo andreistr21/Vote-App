@@ -1,5 +1,6 @@
 import json
 
+from django.db.models import QuerySet
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
@@ -27,11 +28,12 @@ class MakeVoteView(APIView):
         )
 
 
+# TODO: Add tests
 class AdminVoteFormsListView(ListAPIView):
     serializer_class = VoteFormSerializer
     pagination_class = PageNumberPagination
     pagination_class.page_size = 10
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[VoteForm]:
         user = self.request.user
-        return VoteForm.objects.filter(admin=user)  # type: ignore
+        return VoteForm.objects.filter(admin=user).select_related("admin")  # type: ignore

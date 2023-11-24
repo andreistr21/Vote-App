@@ -26,6 +26,7 @@ class VoteForm(models.Model):
     class Meta:
         verbose_name = "VoteForm"
         verbose_name_plural = "VoteForms"
+        ordering = ("-created",)
 
         constraints = [
             models.CheckConstraint(

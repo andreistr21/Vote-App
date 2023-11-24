@@ -1,6 +1,7 @@
 import json
 
 from django.db import IntegrityError
+from django.db.models import Count, QuerySet
 from rest_framework import serializers
 
 from vote.models import VoteFields, VoteForm, Votes
@@ -13,22 +14,33 @@ class VotesSerializer(serializers.ModelSerializer):
 
 
 class VoteFieldsSerializer(serializers.ModelSerializer):
-    votes = VotesSerializer(many=True, read_only=True)
-
     class Meta:
         model = VoteFields
         fields = "__all__"
 
 
+# TODO: Update tests
 class VoteFormSerializer(serializers.ModelSerializer):
     vote_fields = VoteFieldsSerializer(many=True)
-    votes = VotesSerializer(many=True, read_only=True)
+    votes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = VoteForm
         fields = "__all__"
 
-    def validate_vote_fields(self, data: dict) -> None:
+    def to_representation(self, instance: QuerySet):
+        representation = super().to_representation(instance)
+        representation["admin"] = instance.admin.username  # type:ignore
+        return representation
+
+    def get_votes_count(self, instance: VoteForm):
+        return (
+            Votes.objects.filter(form=instance)
+            .values("vote")
+            .annotate(vote_count=Count("id"))
+        )
+
+    def validate_vote_fields(self, data: dict) -> dict:
         # Validates if at least two fields received
         if len(data) < 2:
             raise serializers.ValidationError(
@@ -42,6 +54,7 @@ class VoteFormSerializer(serializers.ModelSerializer):
                     }
                 )
             )
+        return data
 
     def create(self, validated_data: dict) -> VoteForm:
         vote_fields_data = validated_data.pop("vote_fields")
