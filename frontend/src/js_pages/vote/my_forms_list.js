@@ -39,22 +39,20 @@ function getTotalVotes(formData) {
 /**
  * Adds votes count and percentage to vote_fields
  */
-function addVotesCount(formsData) {
-  formsData.forEach(function (formData) {
-    const totalVotes = getTotalVotes(formData);
-    formData.total_votes = totalVotes;
-    formData.vote_fields.forEach(function (vote_field) {
-      const votesPerField = findVoteCountById(formData, vote_field.id);
-      vote_field.votes_amount = votesPerField;
-      if (votesPerField == 0) {
-        vote_field.votes_percentage = 0;
-      } else {
-        vote_field.votes_percentage = (
-          (votesPerField / totalVotes) *
-          100
-        ).toFixed(2);
-      }
-    });
+function addVotesCount(formData) {
+  const totalVotes = getTotalVotes(formData);
+  formData.total_votes = totalVotes;
+  formData.vote_fields.forEach(function (vote_field) {
+    const votesPerField = findVoteCountById(formData, vote_field.id);
+    vote_field.votes_amount = votesPerField;
+    if (votesPerField == 0) {
+      vote_field.votes_percentage = 0;
+    } else {
+      vote_field.votes_percentage = (
+        (votesPerField / totalVotes) *
+        100
+      ).toFixed(2);
+    }
   });
 }
 
@@ -66,7 +64,9 @@ function createFormsList(formsData) {
       formsData.forEach(function (formData) {
         formData.created = normalizeDate(formData.created);
         formData.closing = normalizeDate(formData.closing);
-        addVotesCount(formsData);
+        if (formData.statistics_type === 1 && formData.votes_count.length > 0) {
+          addVotesCount(formData);
+        }
         // eslint-disable-next-line no-undef
         const renderedHTML = ejs.render(templateString, formData);
         forms.push(renderedHTML);

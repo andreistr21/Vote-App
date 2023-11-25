@@ -10,6 +10,17 @@
   --grey-700: #334155;
   --grey-800: #1e293b;
   --grey-900: #0f172a;
+  
+  /* blue */
+  --blue-100: #dcf4f5;
+  --blue-200: #b9e9eb;
+  --blue-300: #96dfe2;
+  --blue-400: #73d4d8;
+  --blue-500: #50c9ce;
+  --blue-600: #40a1a5;
+  --blue-700: #30797c;
+  --blue-800: #205052;
+  --blue-900: #102829;
 }
 
 main {
@@ -61,7 +72,7 @@ HEADER
 
 /* 
 =======
-HEADER
+Other
 =======
 */
 
@@ -161,4 +172,9 @@ Vote Form
 .vote-bar-percents-verbal {
   margin-left: auto;
   margin-right: 8px;
+}
+
+.form-voted-field{
+  border-radius: 4px;
+  outline: 3px solid var(--blue-500);
 }

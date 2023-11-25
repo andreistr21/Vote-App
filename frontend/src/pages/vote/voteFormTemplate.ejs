@@ -11,22 +11,29 @@
     <p class="form-closing-date-time"><%= closing %></p>
   </div>
 
-  <%# # TODO: Show which vote current user chose %>
   <p class="form-desc"><%= description %></p>
   <div class="form-vote-fields">
     <% vote_fields.forEach(function(vote_field){ %>
-    <div id="vote-field-<%= vote_field.id %>" class="vote-field">
+    <div
+      id="vote-field-<%= vote_field.id %>"
+      class="vote-field <% if (user_vote_id.includes(vote_field.id)) { %> form-voted-field <% } %>"
+    >
       <div class="vote-bar-container">
-        <%# # TODO: Not show perc values if form of closed type %>
+        <% if (statistics_type === 1 && vote_field.votes_percentage) { %>
         <div
           class="vote-bar"
+          <% // eslint-disable %>
           style="width: <%= vote_field.votes_percentage %>%"
+          <% // eslint-enable %>
         ></div>
+        <% } else { %>
+        <div class="vote-bar" style="width: 0%"></div>
+        <% } %>
         <div class="vote-input">
-          <% if (votes_type == 1) { %>
-          <span><input type="radio" name="form-name" /></span>
-          <% } %> <% if (votes_type == 2) { %>
-          <span><input type="checkbox" name="form-name" /></span>
+          <% if (votes_type === 1) { %>
+          <span><input type="radio" name="<%= name %>" /></span>
+          <% } %> <% if (votes_type === 2) { %>
+          <span><input type="checkbox" name="<%= name %>" /></span>
           <% } %>
           <div class="vote-bar-text"><%= vote_field.name %></div>
           <% if (vote_field.description){ %>
@@ -34,16 +41,19 @@
             <span class="tooltip-trigger">⍰</span>
             <div class="tooltip"><%= vote_field.description %></div>
           </div>
-          <% } %> <%# # TODO: Not show perc values if form of closed type %>
+          <% } %> <% if (statistics_type === 1 && votes_count.length > 0) { %>
           <div class="vote-bar-percents-verbal">
             <%= vote_field.votes_percentage %>%
           </div>
+          <% } %>
         </div>
       </div>
     </div>
     <% }); %>
-    <div class="total-votes small-text">
-      <p>Total votes: <%= total_votes %></p>
-    </div>
   </div>
+  <% if (statistics_type === 1 && votes_count.length > 0) { %>
+  <div class="total-votes small-text">
+    <p>Total votes: <%= total_votes %></p>
+  </div>
+  <% } %>
 </div>
