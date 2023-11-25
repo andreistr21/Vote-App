@@ -23,6 +23,7 @@ class VoteFieldsSerializer(serializers.ModelSerializer):
 class VoteFormSerializer(serializers.ModelSerializer):
     vote_fields = VoteFieldsSerializer(many=True)
     votes_count = serializers.SerializerMethodField()
+    user_vote_id = serializers.SerializerMethodField()
 
     class Meta:
         model = VoteForm
@@ -33,14 +34,19 @@ class VoteFormSerializer(serializers.ModelSerializer):
         representation["admin"] = instance.admin.username  # type:ignore
         return representation
 
-    def get_votes_count(self, instance: VoteForm) -> QuerySet | None:
-        if instance.statistics_type == 2:
-            return None
+    def get_votes_count(self, vote_form: VoteForm) -> QuerySet | list:
+        if vote_form.statistics_type == 2:
+            return []
         return (
-            Votes.objects.filter(form=instance)
+            Votes.objects.filter(form=vote_form)
             .values("vote")
             .annotate(vote_count=Count("id"))
         )
+
+    def get_user_vote_id(self, vote_form: VoteForm):
+        return Votes.objects.filter(
+            user=self.context["request"].user, form=vote_form
+        ).values_list("vote", flat=True)
 
     def validate_vote_fields(self, data: dict) -> dict:
         # Validates if at least two fields received
