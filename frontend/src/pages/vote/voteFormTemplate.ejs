@@ -19,7 +19,7 @@
       class="vote-field <% if (user_vote_id.includes(vote_field.id)) { %> form-voted-field <% } %>"
     >
       <div class="vote-bar-container">
-        <% if (statistics_type === 1 && vote_field.votes_percentage) { %>
+        <% if (vote_field.votes_percentage) { %>
         <div
           class="vote-bar"
           <% // eslint-disable %>
@@ -41,9 +41,9 @@
             <span class="tooltip-trigger">⍰</span>
             <div class="tooltip"><%= vote_field.description %></div>
           </div>
-          <% } %> <% if (statistics_type === 1 && votes_count.length > 0) { %>
+          <% } %> <% if (votes_count.length > 0) { %>
           <div class="vote-bar-percents-verbal">
-            <%= vote_field.votes_percentage %>
+            <%= vote_field.votes_percentage %>%
           </div>
           <% } %>
         </div>

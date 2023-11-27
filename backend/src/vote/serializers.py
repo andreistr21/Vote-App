@@ -2,6 +2,7 @@ import json
 
 from django.db import IntegrityError
 from django.db.models import Count, QuerySet
+from django.utils import timezone
 from rest_framework import serializers
 
 from vote.models import VoteFields, VoteForm, Votes
@@ -35,7 +36,10 @@ class VoteFormSerializer(serializers.ModelSerializer):
         return representation
 
     def get_votes_count(self, vote_form: VoteForm) -> QuerySet | list:
-        if vote_form.statistics_type == 2:
+        if (
+            vote_form.statistics_type == 2
+            and timezone.now() < vote_form.closing
+        ):
             return []
         return (
             Votes.objects.filter(form=vote_form)

@@ -64,7 +64,7 @@ function createFormsList(formsData) {
       formsData.forEach(function (formData) {
         formData.created = normalizeDate(formData.created);
         formData.closing = normalizeDate(formData.closing);
-        if (formData.statistics_type === 1 && formData.votes_count.length > 0) {
+        if (formData.votes_count.length > 0) {
           addVotesCount(formData);
         }
         // eslint-disable-next-line no-undef
