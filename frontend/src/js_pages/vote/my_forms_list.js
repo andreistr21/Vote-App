@@ -1,4 +1,5 @@
 import { backendDomain } from "../../globals.js";
+import { addListenersToForms } from "./form_vote.js";
 
 function loadTemplateFile() {
   return fetch("./voteFormTemplate.ejs")
@@ -59,7 +60,7 @@ function addVotesCount(formData) {
 function createFormsList(formsData) {
   let forms = [];
 
-  loadTemplateFile()
+  return loadTemplateFile()
     .then((templateString) => {
       formsData.forEach(function (formData) {
         formData.created = normalizeDate(formData.created);
@@ -75,6 +76,7 @@ function createFormsList(formsData) {
     })
     .catch((error) => {
       console.error("Error loading template:", error);
+      throw error;
     });
 }
 
@@ -87,7 +89,7 @@ function appendFormsToHTML(formsList) {
 }
 
 function fetchData() {
-  fetch(backendDomain + "vote/my-forms/", {
+  return fetch(backendDomain + "vote/my-forms/", {
     method: "GET",
     credentials: "include",
     headers: {
@@ -96,7 +98,7 @@ function fetchData() {
   })
     .then((response) => response.json())
     .then((data) => {
-      createFormsList(data.results);
+      return createFormsList(data.results);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -104,5 +106,7 @@ function fetchData() {
 }
 
 window.addEventListener("load", function () {
-  fetchData();
+  fetchData().then(() => {
+    addListenersToForms();
+  });
 });

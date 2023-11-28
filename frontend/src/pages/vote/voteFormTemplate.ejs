@@ -1,4 +1,4 @@
-<div class="vote-form">
+<div class="vote-form" id="vote-form-<%= id %>">
   <div class="right-content small-text">
     <p class="form-admin-username"><%= admin %></p>
     <p>-</p>
@@ -13,10 +13,11 @@
 
   <p class="form-desc"><%= description %></p>
   <div class="form-vote-fields">
-    <% vote_fields.forEach(function(vote_field){ %>
+    <% vote_fields.forEach(function(vote_field){ %> 
+    <% var userVoted = user_vote_id.includes(vote_field.id) %>
     <div
       id="vote-field-<%= vote_field.id %>"
-      class="vote-field <% if (user_vote_id.includes(vote_field.id)) { %> form-voted-field <% } %>"
+      class="vote-field <% if (userVoted) { %> form-voted-field <% } %>"
     >
       <div class="vote-bar-container">
         <% if (vote_field.votes_percentage) { %>
@@ -30,11 +31,12 @@
         <div class="vote-bar" style="width: 0%"></div>
         <% } %>
         <div class="vote-input">
-          <% if (votes_type === 1) { %>
-          <span><input type="radio" name="<%= name %>" /></span>
-          <% } %> <% if (votes_type === 2) { %>
-          <span><input type="checkbox" name="<%= name %>" /></span>
-          <% } %>
+          <span
+            ><input
+              type="<% if (votes_type === 1) { %>radio<% } %><% if (votes_type === 2) { %>checkbox<% } %>"
+              name="<%= name %>"
+              <% if (userVoted) { %>checked <% } %>
+          /></span>
           <div class="vote-bar-text"><%= vote_field.name %></div>
           <% if (vote_field.description){ %>
           <div class="tooltip-container">
