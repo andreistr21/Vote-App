@@ -8,10 +8,18 @@ from rest_framework import serializers
 from vote.models import VoteFields, VoteForm, Votes
 
 
-class VotesSerializer(serializers.ModelSerializer):
+# TODO: Add tests
+class CreateVotesSerializer(serializers.ModelSerializer):
+    # TODO: Add validation: field id belongs to write form
+    # TODO: Add validation: only one choice per vote field per user
+    # TODO: Add validation: only one choice per user for single choice forms
     class Meta:
         model = Votes
         fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.initial_data["user"] = self.context["request"].user.id
 
 
 class VoteFieldsSerializer(serializers.ModelSerializer):

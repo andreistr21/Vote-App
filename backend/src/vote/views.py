@@ -1,15 +1,15 @@
 import json
 
 from django.db.models import QuerySet
-from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework import mixins, status
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from vote.models import VoteForm
-from vote.serializers import VoteFormSerializer
+from vote.serializers import CreateVotesSerializer, VoteFormSerializer
 
 
 class MakeVoteView(APIView):
@@ -37,3 +37,11 @@ class AdminVoteFormsListView(ListAPIView):
     def get_queryset(self) -> QuerySet[VoteForm]:
         user = self.request.user
         return VoteForm.objects.filter(admin=user).select_related("admin")  # type: ignore
+
+
+# TODO: Add tests
+class CreateVoteView(mixins.CreateModelMixin, GenericAPIView):
+    serializer_class = CreateVotesSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
