@@ -22,6 +22,13 @@ class CreateVotesSerializer(serializers.ModelSerializer):
         self.initial_data["user"] = self.context["request"].user.id
 
 
+# TODO: Add tests
+class DeleteVotesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Votes
+        fields = "__all__"
+
+
 class VoteFieldsSerializer(serializers.ModelSerializer):
     class Meta:
         model = VoteFields

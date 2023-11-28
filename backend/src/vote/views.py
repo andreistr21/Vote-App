@@ -1,15 +1,20 @@
 import json
 
 from django.db.models import QuerySet
+from django.shortcuts import get_object_or_404
 from rest_framework import mixins, status
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import DestroyAPIView, GenericAPIView, ListAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from vote.models import VoteForm
-from vote.serializers import CreateVotesSerializer, VoteFormSerializer
+from vote.models import VoteForm, Votes
+from vote.serializers import (
+    CreateVotesSerializer,
+    DeleteVotesSerializer,
+    VoteFormSerializer,
+)
 
 
 class MakeVoteView(APIView):
@@ -45,3 +50,25 @@ class CreateVoteView(mixins.CreateModelMixin, GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
+# TODO: Add tests
+class DeleteVoteView(DestroyAPIView):
+    serializer_class = DeleteVotesSerializer
+
+    def get_queryset(self) -> QuerySet[Votes]:
+        return Votes.objects.all()
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        filter_kwargs = {
+            "user": self.request.user.id,
+            "vote": self.request.data["vote"],
+        }
+        obj = get_object_or_404(queryset, **filter_kwargs)
+
+        # May raise a permission denied
+        self.check_object_permissions(self.request, obj)
+
+        return obj
