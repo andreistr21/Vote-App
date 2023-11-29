@@ -45,7 +45,7 @@ class VoteFormSerializer(serializers.ModelSerializer):
         model = VoteForm
         fields = "__all__"
 
-    def to_representation(self, instance: QuerySet):
+    def to_representation(self, instance: VoteForm):
         representation = super().to_representation(instance)
         representation["admin"] = instance.admin.username  # type:ignore
         return representation

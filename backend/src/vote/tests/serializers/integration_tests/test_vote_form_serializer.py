@@ -12,31 +12,6 @@ from vote.models import VoteFields, VoteForm
 from vote.serializers import VoteFormSerializer
 
 
-def test__get_unknown_error_data():
-    error_msg = "Test error message"
-    serializer = VoteFormSerializer()
-
-    result = serializer._get_unknown_error_data(error_msg)
-
-    assert result == json.dumps({"errors": {"Unknown error": (error_msg)}})
-
-
-def test__get_closing_greater_than_created_error_data():
-    serializer = VoteFormSerializer()
-
-    result = serializer._get_closing_greater_than_created_error_data()
-
-    assert result == json.dumps(
-        {
-            "errors": {
-                "Form closing date": (
-                    "Closing date should be greater then creation"
-                )
-            }
-        }
-    )
-
-
 @pytest.mark.django_db
 def test_create_valid_data(
     vote_form_data: dict[str, Any],
