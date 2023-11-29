@@ -48,25 +48,46 @@ function sendDeleteVote(event) {
     });
 }
 
-function getVoteFormData(event) {
-  const voteFormObjId = event.target.closest(".vote-form").id;
+function getVoteFormData(target) {
+  const voteFormObjId = target.closest(".vote-form").id;
   let data = {};
   data.form = parseInt(voteFormObjId.split("-").pop(), 10);
-  const voteField = event.target.parentNode.parentNode.parentNode.parentNode.id;
+  const voteField = target.parentNode.parentNode.parentNode.parentNode.id;
   data.vote = parseInt(voteField.split("-").pop(), 10);
   return data;
 }
 
 export function addListenersToForms() {
   const voteForms = document.querySelectorAll(".vote-form");
+  const previousRadiosEvents = {};
 
   voteForms.forEach(function (voteForm) {
+    // Adds radio inputs to previousRadiosEvents, so they could be identified
+    // as previously selected
+    const formId = voteForm.id;
+    const initialCheckedRadio = voteForm.querySelector(
+      "input[type='radio']:checked"
+    );
+    if (initialCheckedRadio) {
+      previousRadiosEvents[formId] = initialCheckedRadio;
+    }
+
     voteForm.addEventListener("change", function (event) {
-      if (event.target.type === "radio" || event.target.type === "checkbox") {
-        if (event.target.checked) {
-          sendCreateVote(event);
+      const { target } = event;
+      const isRadio = target.type === "radio";
+      const isCheckbox = target.type === "checkbox";
+      if (isRadio) {
+        const previousRadioEvent = previousRadiosEvents[formId];
+        if (previousRadioEvent) {
+          sendDeleteVote(previousRadioEvent);
+        }
+        previousRadiosEvents[formId] = target;
+        sendCreateVote(target);
+      } else if (isCheckbox) {
+        if (target.checked) {
+          sendCreateVote(target);
         } else {
-          sendDeleteVote(event);
+          sendDeleteVote(target);
         }
       }
     });
