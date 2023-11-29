@@ -1,6 +1,7 @@
 from rest_framework.authentication import TokenAuthentication
 
 
+# TODO: Add tests
 class TokenAuthSupportCookie(TokenAuthentication):
     """
     Extend the TokenAuthentication class to support cookie based authentication

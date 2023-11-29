@@ -7,7 +7,7 @@ from django.urls import reverse
 from rest_framework.request import Request
 from rest_framework.test import APIRequestFactory
 
-from vote.views import MakeVoteView
+from vote.views import CreateVoteFormView
 
 
 @pytest.fixture()
@@ -17,7 +17,7 @@ def api_request():
 
 @pytest.fixture
 def view(api_request: Request):
-    view = MakeVoteView()
+    view = CreateVoteFormView()
     view.setup(api_request)
     return view
 
@@ -25,7 +25,7 @@ def view(api_request: Request):
 @pytest.mark.django_db
 def test_post_method_valid_data(
     api_request: Request,
-    view: MakeVoteView,
+    view: CreateVoteFormView,
     user_token: User,
     vote_form_data: dict[str, Any],
     vote_fields_data: dict[str, list[dict[str, str]]],
@@ -44,7 +44,7 @@ def test_post_method_valid_data(
 @pytest.mark.django_db
 def test_post_method_invalid_data(
     api_request: Request,
-    view: MakeVoteView,
+    view: CreateVoteFormView,
     user_token: User,
     vote_form_data: dict[str, Any],
 ):

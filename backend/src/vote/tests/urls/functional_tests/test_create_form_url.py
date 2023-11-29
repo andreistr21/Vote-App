@@ -4,7 +4,7 @@ import pytest
 from django.urls import resolve, reverse
 from rest_framework.test import APIClient
 
-from vote.views import MakeVoteView
+from vote.views import CreateVoteFormView
 
 URL_PATH = reverse("vote:create_form")
 
@@ -32,7 +32,7 @@ def test_post_method_auth_user(
 @pytest.mark.parametrize("path", [URL_PATH, "/vote/create-form/"])
 def test_view_used(path: str):
     view_class = resolve(path=path).func.view_class  # type: ignore
-    assert view_class == MakeVoteView
+    assert view_class == CreateVoteFormView
 
 
 def test_url_name():
