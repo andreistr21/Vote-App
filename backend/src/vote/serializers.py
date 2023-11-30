@@ -35,7 +35,6 @@ class VoteFieldsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-# TODO: Update tests
 class VoteFormSerializer(serializers.ModelSerializer):
     vote_fields = VoteFieldsSerializer(many=True)
     votes_count = serializers.SerializerMethodField()
@@ -47,7 +46,7 @@ class VoteFormSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance: VoteForm):
         representation = super().to_representation(instance)
-        representation["admin"] = instance.admin.username  # type:ignore
+        representation["admin"] = instance.admin.username
         return representation
 
     def get_votes_count(self, vote_form: VoteForm) -> QuerySet | list:
