@@ -1,3 +1,5 @@
+from typing import Callable
+
 import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -30,3 +32,13 @@ def user(user_data) -> User:
 def user_token(user: User) -> User:
     Token.objects.get_or_create(user=user)
     return user
+
+
+@pytest.fixture
+def user_gen() -> Callable[[str], User]:
+    def _create_user(username: str, password="test-password") -> User:
+        return get_user_model().objects.create_user(
+            username=username, password=password
+        )
+
+    return _create_user

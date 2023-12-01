@@ -33,7 +33,6 @@ class CreateVoteFormView(APIView):
         )
 
 
-# TODO: Add tests
 class AdminVoteFormsListView(ListAPIView):
     serializer_class = VoteFormSerializer
     pagination_class = PageNumberPagination
