@@ -12,7 +12,6 @@ from vote.models import VoteFields, VoteForm, Votes
 class CreateVotesSerializer(serializers.ModelSerializer):
     # TODO: Add validation: field id belongs to write form
     # TODO: Add validation: only one choice per vote field per user
-    # TODO: Add validation: only one choice per user for single choice forms
     class Meta:
         model = Votes
         fields = "__all__"
@@ -23,6 +22,27 @@ class CreateVotesSerializer(serializers.ModelSerializer):
         # instance is immutable" errors in browsable API
         if hasattr(self, "initial_data") and not self.initial_data.get("user"):
             self.initial_data["user"] = self.context["request"].user.id
+
+    def validate_vote(self, data: VoteFields) -> VoteFields:
+        if data.form.votes_type == 1:
+            self.only_one_vote_per_user_validation(data)
+
+        return data
+
+    def only_one_vote_per_user_validation(self, data: VoteFields) -> None:
+        if Votes.objects.filter(
+            user=self.context["request"].user.id, form=data.form.id
+        ):
+            raise serializers.ValidationError(
+                {
+                    "errors": {
+                        "vote": (
+                            "User already voted for this form. Delete"
+                            " previous vote if you want to change it."
+                        )
+                    }
+                }
+            )
 
 
 # TODO: Add tests
