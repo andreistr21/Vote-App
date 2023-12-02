@@ -68,7 +68,6 @@ class Votes(models.Model):
     form = models.ForeignKey(
         VoteForm, related_name="votes", on_delete=models.CASCADE
     )
-    # TODO: Add validation, so only defined in vote fields can be chosen.
     vote = models.ForeignKey(
         VoteFields,
         related_name="votes",

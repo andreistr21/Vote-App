@@ -10,7 +10,6 @@ from vote.models import VoteFields, VoteForm, Votes
 
 # TODO: Add tests
 class CreateVotesSerializer(serializers.ModelSerializer):
-    # TODO: Add validation: field id belongs to write form
     class Meta:
         model = Votes
         fields = "__all__"
