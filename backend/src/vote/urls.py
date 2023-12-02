@@ -10,7 +10,6 @@ from vote.views import (
 app_name = "vote"
 urlpatterns = [
     path("create-form/", CreateVoteFormView.as_view(), name="create_form"),
-    # TODO: Add test
     path("my-forms/", AdminVoteFormsListView.as_view(), name="my_forms"),
     # TODO: Add test
     path("create-vote/", CreateVoteView.as_view(), name="create_vote"),
