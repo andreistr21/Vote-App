@@ -19,7 +19,10 @@ class CreateVotesSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.initial_data["user"] = self.context["request"].user.id
+        # Fixes "object has no attribute 'initial_data'" and "This QueryDict
+        # instance is immutable" errors in browsable API
+        if hasattr(self, "initial_data") and not self.initial_data.get("user"):
+            self.initial_data["user"] = self.context["request"].user.id
 
 
 # TODO: Add tests
