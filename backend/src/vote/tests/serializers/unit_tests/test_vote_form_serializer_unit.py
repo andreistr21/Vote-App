@@ -41,7 +41,9 @@ def test_validate_vote_fields():
 
 
 def test_to_representation(mocker: MockerFixture):
-    mocker.patch.object(ModelSerializer, "to_representation", return_value={"admin": 1})
+    mocker.patch.object(
+        ModelSerializer, "to_representation", return_value={"admin": 1}
+    )
     admin = User(id=1, username="test-username")
     vote_form = VoteForm(
         id=1,

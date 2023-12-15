@@ -19,6 +19,15 @@ def vote_form_data(user_token: User) -> dict[str, Any]:
 
 
 @pytest.fixture
+def vote_form_data_user(user_token: User) -> dict[str, Any]:
+    return {
+        "admin": user_token,
+        "name": "test-form-name",
+        "closing": timezone.now() + timedelta(1),
+    }
+
+
+@pytest.fixture
 def vote_fields_data() -> dict[str, list[dict[str, str]]]:
     return {
         "vote_fields": [

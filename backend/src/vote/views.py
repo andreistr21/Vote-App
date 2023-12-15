@@ -40,7 +40,11 @@ class AdminVoteFormsListView(ListAPIView):
 
     def get_queryset(self) -> QuerySet[VoteForm]:
         user = self.request.user
-        return VoteForm.objects.filter(admin=user).select_related("admin")  # type: ignore
+        return VoteForm.objects.filter(
+            admin=user
+        ).select_related(  # type: ignore
+            "admin"
+        )
 
 
 # TODO: Add tests

@@ -8,7 +8,6 @@ from rest_framework import serializers
 from vote.models import VoteFields, VoteForm, Votes
 
 
-# TODO: Add tests
 class CreateVotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Votes
