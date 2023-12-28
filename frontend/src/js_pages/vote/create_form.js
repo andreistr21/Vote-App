@@ -49,7 +49,6 @@ function getVoteFieldsValues() {
 }
 
 function getFormData() {
-  // let formElement = document.getElementById("vote-form-form");
   let formNameInput = document.getElementById("form-name-input").value;
   let formDescriptionInput = document.getElementById(
     "form-description-input"
@@ -61,7 +60,6 @@ function getFormData() {
   let closingDateInput = document.getElementById("closing-date-input").value;
 
   if (
-    // formElement &&
     formNameInput &&
     formDescriptionInput &&
     statisticsTypeDropdown &&
@@ -69,7 +67,6 @@ function getFormData() {
     closingDateInput
   ) {
     return {
-      // formElement: formElement,
       name: formNameInput,
       description: formDescriptionInput,
       statistics_type: statisticsTypeDropdown,

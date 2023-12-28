@@ -4,6 +4,7 @@ from typing import Any
 import pytest
 from django.contrib.auth.models import User
 from django.utils import timezone
+from rest_framework.exceptions import ValidationError
 
 from vote.models import VoteFields, VoteForm, Votes
 from vote.serializers import VoteFormSerializer
@@ -41,9 +42,11 @@ def vote_fields_data() -> dict[str, list[dict[str, str]]]:
 def vote_form(
     vote_form_data: dict[str, Any],
     vote_fields_data: dict[str, list[dict[str, str]]],
-) -> VoteForm | None:
+) -> VoteForm:
     serializer = VoteFormSerializer(data=vote_form_data | vote_fields_data)
-    return serializer.save() if serializer.is_valid() else None
+    if not serializer.is_valid():
+        raise ValidationError("VoteFormSerializer is not valid")
+    return serializer.save()
 
 
 @pytest.fixture

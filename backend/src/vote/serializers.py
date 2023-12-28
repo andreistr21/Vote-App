@@ -59,7 +59,6 @@ class CreateVotesSerializer(serializers.ModelSerializer):
             )
 
 
-# TODO: Add tests
 class DeleteVotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Votes

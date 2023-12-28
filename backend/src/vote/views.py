@@ -47,7 +47,6 @@ class AdminVoteFormsListView(ListAPIView):
         )
 
 
-# TODO: Add tests
 class CreateVoteView(mixins.CreateModelMixin, GenericAPIView):
     serializer_class = CreateVotesSerializer
 
