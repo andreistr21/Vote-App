@@ -54,7 +54,6 @@ class CreateVoteView(mixins.CreateModelMixin, GenericAPIView):
         return self.create(request, *args, **kwargs)
 
 
-# TODO: Add tests
 class DeleteVoteView(DestroyAPIView):
     serializer_class = DeleteVotesSerializer
 

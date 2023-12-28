@@ -50,12 +50,10 @@ def vote_form(
 
 
 @pytest.fixture
-def vote_form_with_vote(vote_form: VoteForm) -> VoteForm | None:
-    if vote_form:
-        Votes.objects.create(
-            user=vote_form.admin,
-            form=vote_form,
-            vote=VoteFields.objects.all()[1],
-        )
-        return vote_form
-    return None
+def vote_form_with_vote(vote_form: VoteForm) -> VoteForm:
+    Votes.objects.create(
+        user=vote_form.admin,
+        form=vote_form,
+        vote=VoteFields.objects.all()[1],
+    )
+    return vote_form
